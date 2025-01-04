@@ -115,3 +115,97 @@ class CustomerModelTest(TestCase):
                 name="a" * 101, address="Swidnicka 2, 50-345 Wroclaw"
             )
             temp_customer.full_clean()
+
+
+class OrderModelTest(TestCase):
+    def setUp(self):
+        self.temp_customer = Customer.objects.create(
+            name="Temporary customer", address="Swidnicka 2, 50-345 Wroclaw"
+        )
+
+        self.temp_product1 = Product.objects.create(
+            name="Temporary product 1", price=1.99, available=True
+        )
+
+        self.temp_product2 = Product.objects.create(
+            name="Temporary product 2", price=2.99, available=True
+        )
+
+        self.temp_product3 = Product.objects.create(
+            name="Temporary product 3", price=3.99, available=False
+        )
+
+    def test_create_order_with_valid_data(self):
+        temp_order = Order.objects.create(
+            customer=self.temp_customer,
+            date="2025-01-01",
+            status="New",
+        )
+        temp_order.products.set([self.temp_product1, self.temp_product2])
+
+        self.assertEqual(temp_order.customer, self.temp_customer)
+        self.assertQuerySetEqual(
+            temp_order.products.all(),
+            [self.temp_product1, self.temp_product2],
+            ordered=False,
+        )
+        self.assertEqual(temp_order.date, "2025-01-01")
+        self.assertEqual(temp_order.status, "New")
+
+    def test_create_order_with_missing_customer(self):
+        with self.assertRaises(IntegrityError):
+            temp_order = Order.objects.create(date="2025-01-01", status="New")
+            temp_order.products.set([self.temp_product1, self.temp_product2])
+            temp_order.full_clean()
+
+    def test_create_order_with_invalid_status(self):
+        with self.assertRaises(ValidationError):
+            temp_order = Order.objects.create(
+                customer=self.temp_customer, date="2025-01-01", status="Invalid"
+            )
+            temp_order.products.set([self.temp_product1, self.temp_product2])
+            temp_order.full_clean()
+
+    def test_order_total_price_with_valid_products(self):
+        temp_order = Order.objects.create(
+            customer=self.temp_customer,
+            date="2025-01-01",
+            status="New",
+        )
+        temp_order.products.set([self.temp_product1, self.temp_product2])
+
+        self.assertEqual(
+            float(temp_order.total_price()),
+            self.temp_product1.price + self.temp_product2.price,
+        )
+
+    def test_order_total_price_with_no_products(self):
+        temp_order = Order.objects.create(
+            customer=self.temp_customer,
+            date="2025-01-01",
+            status="New",
+        )
+
+        self.assertEqual(float(temp_order.total_price()), 0.0)
+
+    def test_order_can_be_fullfilled(self):
+        temp_order = Order.objects.create(
+            customer=self.temp_customer,
+            date="2025-01-01",
+            status="New",
+        )
+        temp_order.products.set([self.temp_product1, self.temp_product2])
+
+        self.assertTrue(temp_order.can_be_fullfilled())
+
+    def test_order_cannot_be_fullfilled(self):
+        temp_order = Order.objects.create(
+            customer=self.temp_customer,
+            date="2025-01-01",
+            status="New",
+        )
+        temp_order.products.set(
+            [self.temp_product1, self.temp_product2, self.temp_product3]
+        )
+
+        self.assertFalse(temp_order.can_be_fullfilled())
