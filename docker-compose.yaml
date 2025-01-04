@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   django:
     build:
@@ -30,6 +28,20 @@ services:
       - pgdata:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+
+  test:
+    build:
+      context: .
+      dockerfile: ./software_engineering/Dockerfile
+    container_name: test
+    command: python software_engineering/manage.py test myapp.tests
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost
+    depends_on:
+      - pgdb
 
 volumes:
   pgdata:
