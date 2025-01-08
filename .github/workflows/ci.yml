@@ -28,7 +28,7 @@ jobs:
       - name: Generate API documentation
         run: |
           . venv/bin/activate
-          python manage.py generateschema > docs.json
+          python software_engineering_django/manage.py generateschema > docs.json
 
       - name: Commit and push documentation
         run: |
