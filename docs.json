@@ -6,7 +6,7 @@ paths:
   /api/products/:
     get:
       operationId: listProducts
-      description: ''
+      description: View for Product model
       parameters: []
       responses:
         '200':
@@ -21,7 +21,7 @@ paths:
       - api
     post:
       operationId: createProduct
-      description: ''
+      description: View for Product model
       parameters: []
       requestBody:
         content:
@@ -46,7 +46,7 @@ paths:
   /api/products/{id}/:
     get:
       operationId: retrieveProduct
-      description: ''
+      description: View for Product model
       parameters:
       - name: id
         in: path
@@ -65,7 +65,7 @@ paths:
       - api
     put:
       operationId: updateProduct
-      description: ''
+      description: View for Product model
       parameters:
       - name: id
         in: path
@@ -95,7 +95,7 @@ paths:
       - api
     patch:
       operationId: partialUpdateProduct
-      description: ''
+      description: View for Product model
       parameters:
       - name: id
         in: path
@@ -125,7 +125,7 @@ paths:
       - api
     delete:
       operationId: destroyProduct
-      description: ''
+      description: View for Product model
       parameters:
       - name: id
         in: path
