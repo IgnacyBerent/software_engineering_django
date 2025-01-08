@@ -1,11 +1,11 @@
 services:
   django:
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: ./software_engineering/Dockerfile
     container_name: django
-    env_file:
-      - .env
     command: python software_engineering/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/src/app
