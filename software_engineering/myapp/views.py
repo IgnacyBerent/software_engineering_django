@@ -8,10 +8,6 @@ from .forms import ProductForm
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    """
-    View for Product model
-    """
-
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
