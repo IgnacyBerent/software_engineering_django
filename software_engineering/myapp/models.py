@@ -1,13 +1,13 @@
+from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator
-from decimal import Decimal
 
 
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     price = models.DecimalField(
-        max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal("0.01"))]
+        max_digits=5, decimal_places=2, validators=[MinValueValidator(0.01)]
     )
     available = models.BooleanField(default=True)
 
