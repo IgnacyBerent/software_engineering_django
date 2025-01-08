@@ -22,7 +22,7 @@ jobs:
       - name: Set up Docker Compose
         run: docker-compose up -d
       - name: Generate API documentation
-        run: docker-compose exec django python software_engineering/manage.py generateschema > docs.json
+        run: docker-compose exec -T django python software_engineering/manage.py generateschema > docs.json
       - name: Commit and push documentation
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
