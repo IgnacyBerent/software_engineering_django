@@ -1,7 +1,5 @@
 services:
   django:
-    env_file:
-      - .env
     build:
       context: .
       dockerfile: ./software_engineering/Dockerfile
