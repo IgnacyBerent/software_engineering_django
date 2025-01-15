@@ -32,8 +32,11 @@ jobs:
           echo "DATABASE_PORT=5432" >> .env
           echo "DATABASE_HOST=pgdb" >> .env
 
-      - name: Build and start Containers
-        run: docker-compose up --build -d
+      - name: Build Containers
+        run: docker compose build
+
+      - name: Start Containers
+        run: docker compose up -d
 
       - name: Execute unit tests
         run: docker exec $(docker-compose ps -q django) python
