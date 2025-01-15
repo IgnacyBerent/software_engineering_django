@@ -36,7 +36,7 @@ jobs:
         run: docker-compose up --build -d
 
       - name: Execute unit tests
-        run: docker exec $(docker-compose ps -q api) python
+        run: docker exec $(docker-compose ps -q django) python
           software_engineering/manage.py test software_engineering/myapp/tests
   docs:
     needs: test
