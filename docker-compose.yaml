@@ -4,44 +4,30 @@ services:
       context: .
       dockerfile: ./software_engineering/Dockerfile
     container_name: django
-    command: python software_engineering/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/src/app
     ports:
-      - "8000:8000"
+      - "9999:9999"
     environment:
       - DEBUG=1
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_NAME=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_HOST=${DATABASE_HOST}
     depends_on:
       - pgdb
   pgdb:
     image: postgres
     container_name: pgdb
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DB=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data/
     ports:
-      - "5432:5432"
-
-  test:
-    build:
-      context: .
-      dockerfile: ./software_engineering/Dockerfile
-    container_name: test
-    command: python software_engineering/manage.py test myapp.tests
-    volumes:
-      - .:/usr/src/app
-    environment:
-      - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=localhost
-    depends_on:
-      - pgdb
-
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
 volumes:
   pgdata:
