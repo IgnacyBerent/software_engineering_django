@@ -4,8 +4,6 @@ services:
       context: .
       dockerfile: ./software_engineering/Dockerfile
     container_name: django
-    volumes:
-      - .:/usr/src/app
     ports:
       - "9999:9999"
     environment:
