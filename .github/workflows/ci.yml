@@ -24,6 +24,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: Create .env file
+        run: |
+          echo "POSTGRES_NAME=testdb" >> .env
+          echo "POSTGRES_USER=testuser" >> .env
+          echo "POSTGRES_PASSWORD=testpassword" >> .env
+          echo "DATABASE_PORT=5432" >> .env
+          echo "DATABASE_HOST=pgdb" >> .env
+
       - name: Build and start Containers
         run: docker-compose up --build -d
 
