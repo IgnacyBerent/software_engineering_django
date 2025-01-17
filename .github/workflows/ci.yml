@@ -38,6 +38,14 @@ jobs:
       - name: Start Containers
         run: docker compose up -d
 
+      - name: Wait for Containers to be Ready
+        run: |
+          sleep 10  # Adjust the sleep time as needed
+          docker ps
+
+      - name: Print Docker Compose Logs
+        run: docker compose logs
+
       - name: Execute unit tests
         run: docker exec $(docker-compose ps -q django) python
           software_engineering/manage.py test software_engineering/myapp/tests
