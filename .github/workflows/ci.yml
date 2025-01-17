@@ -38,9 +38,14 @@ jobs:
       - name: Start Containers
         run: docker compose up -d
 
+      - name: Print Containers Logs
+        run: docker compose logs
+
+      - name: show running containers
+        run: docker ps
+
       - name: Execute unit tests
-        run: docker exec $(docker-compose ps -q django) python
-          software_engineering/manage.py test software_engineering/myapp/tests
+        run: docker exec $(docker-compose ps -q django) python software_engineering/manage.py test software_engineering/myapp/tests
   docs:
     needs: test
     runs-on: ubuntu-latest
