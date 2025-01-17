@@ -7,11 +7,6 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = "__all__"
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["price"] = 0
-        return representation
-
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
